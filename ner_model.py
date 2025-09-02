@@ -1,6 +1,6 @@
 import spacy
 
-# Necessary in the beginning for pretrained NER model:
+# Required to download the pretrained English NER model before running:
 # python -m spacy download en_core_web_sm
 
 from wikidata_connector import WikidataConnector
@@ -8,14 +8,36 @@ from rapidfuzz import fuzz
 
 
 class GazetteerNER:
+    """
+    Simple gazetteer-based NER using fuzzy matching.
+    """
+
     def __init__(self, entity_dict, threshold=90, max_deviation=3):
+        """
+        Args:
+            entity_dict (dict): Dictionary of entity type -> set/list of entity strings
+            threshold (int): Minimum similarity score to consider a match
+            max_deviation (int): Max difference in length between entity and text span
+        """
         self.entity_dict = entity_dict
         self.threshold = threshold  # similarity cutoff
-        self.max_dev = max_deviation  # how much the window can differ from entity len
+        self.max_dev = max_deviation  # window length deviation allowed
 
     def _best_span(self, text_lc, pat_lc):
+        """
+        Find the best substring of text matching pattern using fuzzy ratio.
+
+        Args:
+            text_lc (str): Lowercased input text
+            pat_lc (str): Lowercased entity string
+
+        Returns:
+            tuple or None: (start_index, end_index, score) if above threshold, else None
+        """
         n, m = len(text_lc), len(pat_lc)
-        best = (-1, -1, -1)  # (start, end, score)
+        best = (-1, -1, -1)  # store best start, end, score
+
+        # Vary window length around entity length
         lo = max(1, m - self.max_dev)
         hi = min(n, m + self.max_dev)
         for win in range(lo, hi + 1):
@@ -23,9 +45,19 @@ class GazetteerNER:
                 score = fuzz.ratio(pat_lc, text_lc[i : i + win])
                 if score > best[2]:
                     best = (i, i + win, score)
+
         return best if best[2] >= self.threshold else None
 
     def predict(self, text):
+        """
+        Predict entities in text using gazetteer.
+
+        Args:
+            text (str): Input text
+
+        Returns:
+            list of tuples: (matched_text, start, end, label, score)
+        """
         ents, t_lc = [], text.lower()
         for label, words in self.entity_dict.items():
             for w in words:
@@ -37,27 +69,34 @@ class GazetteerNER:
 
 
 class GazetteerData:
+    """
+    Prepares gazetteer entities from Wikidata Bundesliga clubs and cities.
+    """
+
     def __init__(self):
         self.entities = None
         self.bundesliga_clubs = None
-
-        self._fill_b_clubs()
+        self._fill_b_clubs()  # populate entities at init
 
     def _fill_b_clubs(self):
+        """
+        Retrieve Bundesliga clubs and cities, preprocess, and store in entities dict.
+        """
         client = WikidataConnector()
         self.bundesliga_clubs = client.retrieve_current_bundesliga_clubs()
 
+        # Extract raw names
         raw_clubs = self.bundesliga_clubs["club_name"].to_list()
         raw_cities = self.bundesliga_clubs["city_name"].to_list()
 
-        # preprocess clubs: keep original + longest word
+        # Preprocess clubs: add full name + longest word
         clubs = []
         for club in raw_clubs:
-            clubs.append(club.lower())
+            clubs.append(club.lower())  # full club name
             longest = max(club.split(), key=len)
-            clubs.append(longest.lower())
+            clubs.append(longest.lower())  # longest word
 
-        # preprocess cities: short + full
+        # Preprocess cities: short (first word) + full name
         cities = []
         for c in raw_cities:
             parts = c.split()
@@ -65,23 +104,42 @@ class GazetteerData:
                 cities.append(parts[0].lower())  # short form
             cities.append(c.lower())  # full form
 
+        # Store as sets for quick lookup
         self.entities = {
             "CLUBS": set(clubs),
             "CITIES": set(cities),
         }
 
+        # DEBUG: show processed entities
         print()
         print(self.entities)
         print()
 
 
 class NERManager:
+    """
+    Combines gazetteer-based and spaCy-based NER.
+    """
+
     def __init__(self):
+        # Initialize gazetteer with preprocessed entities
         self.gazetteer = GazetteerNER(GazetteerData().entities)
+        # Load spaCy NER model
         self.spacy_model = spacy.load("en_core_web_sm")
 
     def compare(self, text):
+        """
+        Compare entities detected by gazetteer and spaCy.
+
+        Args:
+            text (str): Input text
+
+        Returns:
+            dict: {"gazetteer": [...], "spacy": [...]}
+        """
+        # Gazetteer predictions
         gaz_ents = self.gazetteer.predict(text)
+        # spaCy predictions
         spacy_ents = [
             (ent.text, ent.start_char, ent.end_char, ent.label_)
             for ent in self.spacy_model(text).ents
@@ -90,7 +148,10 @@ class NERManager:
 
 
 if __name__ == "__main__":
+    # Initialize NER manager
     manager = NERManager()
     text = "Who is coaching munich?".lower()
+
+    # Compare gazetteer and spaCy predictions
     for k, v in manager.compare(text).items():
         print(k, v)

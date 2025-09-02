@@ -17,14 +17,30 @@ class WikidataConnector:
     def retrieve_current_bundesliga_clubs(self):
         """
         Retrieve all current Bundesliga clubs with their associated city information.
+
+        Returns:
+            pd.DataFrame: DataFrame with columns:
+                - club_uri: Wikidata URI of the club
+                - club_id: Wikidata QID of the club
+                - club_name: English label of the club
+                - city_uri: Wikidata URI of the headquarters city
+                - city_id: Wikidata QID of the city
+                - city_name: English label of the city
+
+        Example:
+                club_uri    club_id         club_name  ...         city_name
+            0  http://...    Q101859    VfL Wolfsburg  ...         Wolfsburg
+            1  http://...    Q101959  Borussia Mön...  ...    Mönchengladbach
+
         """
         logger.info("Retrieving current Bundesliga clubs from Wikidata")
 
         query = """
         SELECT ?club ?clubLabel ?clubCity ?clubCityLabel WHERE {
-        ?club wdt:P31 wd:Q476028;
-                wdt:P118 wd:Q82595;
-                wdt:P159 ?clubCity.
+        ?club wdt:P31 wd:Q476028;           # instance of(P31) football club(Q476028)
+                wdt:P118 wd:Q82595;         # associated with(P118) Bundesliga(Q82595)
+                wdt:P159 ?clubCity.         # headquarters city of(P159)
+
         OPTIONAL { ?club wdt:P118 wd:Q15944511. }
         SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
         }
@@ -64,19 +80,29 @@ class WikidataConnector:
 
     def search_bundesliga_club(self, search_term, limit=1):
         """
-        Search for Bundesliga clubs by name/alias safely
+        Search for Bundesliga clubs by name or alias.
+
+        Args:
+            search_term (str): Club name or partial name to search for.
+            limit (int): Maximum number of results to return (default 1, max 10).
+
+        Returns:
+            dict: SPARQL results in JSON format.
         """
 
         logger.info(f"Searching for club: '{search_term})")
 
         query = f"""
         SELECT ?club ?clubLabel ?clubCity ?manager ?managerLabel WHERE {{
-          ?club wdt:P31 wd:Q476028;
-                wdt:P118 wd:Q82595.
+          ?club wdt:P31 wd:Q476028;         # instance of(P31) football club(Q476028)
+                wdt:P118 wd:Q82595.         # associated with(P118) Bundesliga(Q82595)
+
           ?club (rdfs:label|skos:altLabel) ?alias.
           FILTER(LANG(?alias) = "en").
           FILTER(CONTAINS(LCASE(?alias), "{search_term.lower()}")).
-          ?club wdt:P286 ?manager.
+
+          ?club wdt:P286 ?manager.          # current head coach
+
           OPTIONAL {{ ?club wdt:P31 ?clubCity. }}
           SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
         }}
@@ -93,6 +119,12 @@ class WikidataConnector:
     def get_wikipedia_content_from_wikidata(self, qid):
         """
         Get Wikipedia content for a Wikidata entity using the Wikipedia API
+
+        Args:
+            qid (str): Wikidata entity ID (e.g., "Q64626953")
+
+        Returns:
+            str: Wikipedia intro content as plain text, or None if not found
         """
         logger.info(f"Fetching Wikipedia content for QID: {qid}")
         try:
@@ -143,6 +175,13 @@ class WikidataConnector:
     def get_club_info(self, search_term, include_wikipedia=True):
         """
         Get club and manager info safely with error handling
+
+        Args:
+            search_term (str): Club name to search for
+            include_wikipedia (bool): Whether to fetch Wikipedia content
+
+        Returns:
+            dict: Club information including names, manager, and Wikipedia content
         """
         try:
             results = self.search_bundesliga_club(search_term)
