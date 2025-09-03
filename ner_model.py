@@ -131,9 +131,9 @@ class NERManager:
         self.gazetteer = GazetteerNER(GazetteerData().entities)
         self.spacy_model = spacy.load("en_core_web_sm")
 
-    def compare(self, text):
+    def predict(self, text):
         """
-        Compare entities detected by gazetteer and spaCy.
+        predict entities detected by gazetteer and spaCy.
 
         Args:
             text (str): Input text
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     manager = NERManager()
     text = "Who is coaching munich?".lower()
 
-    # Compare gazetteer and spaCy predictions
-    results = manager.compare(text)
+    # predict gazetteer and spaCy predictions
+    results = manager.predict(text)
     for k, v in results.items():
         logger.info(f"{k} entities: {v}")
