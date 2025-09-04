@@ -14,7 +14,7 @@ chatbot = RAGChatbot()
 csv_file = "failed_queries.csv"
 with open(csv_file, "w", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
-    writer.writerow(["id", "question", "expected", "response"])
+    writer.writerow(["id", "question", "expected", "response", "dataset_type", "model"])
 
 correct = 0
 start_time = time.time()

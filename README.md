@@ -40,6 +40,11 @@ Before running this project, ensure you have the following installed:
    pip install -r requirements.txt
    ```
 
+4. **Download spaCy model**
+   ```bash
+   python -m spacy download en_core_web_sm
+   ```
+
 ## Configuration
 
 
