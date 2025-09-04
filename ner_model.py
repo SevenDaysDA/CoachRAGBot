@@ -1,4 +1,3 @@
-import spacy
 import logging
 
 # Required to download the pretrained English NER model before running:
@@ -129,7 +128,6 @@ class NERManager:
         # Initialize gazetteer with preprocessed entities
         logger.info("Initializing GazetteerNER and spaCy model")
         self.gazetteer = GazetteerNER(GazetteerData().entities)
-        self.spacy_model = spacy.load("en_core_web_sm")
 
     def predict(self, text):
         """
@@ -142,14 +140,9 @@ class NERManager:
             dict: {"gazetteer": [...], "spacy": [...]}
         """
         gaz_ents = self.gazetteer.predict(text)
-        spacy_ents = [
-            (ent.text, ent.start_char, ent.end_char, ent.label_)
-            for ent in self.spacy_model(text).ents
-        ]
-        logger.info(
-            f"Detected {len(gaz_ents)} gazetteer entities and {len(spacy_ents)} spaCy entities"
-        )
-        return {"gazetteer": gaz_ents, "spacy": spacy_ents}
+
+        logger.info(f"Detected {len(gaz_ents)} gazetteer entities")
+        return {"gazetteer": gaz_ents}
 
 
 if __name__ == "__main__":

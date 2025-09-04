@@ -1,11 +1,8 @@
 # Bundesliga RAG Chatbot
 
-> **Note**: This is a markdown file ready for export. Save this content as `README.md` in your project directory.
-
-A Retrieval-Augmented Generation (RAG) system that answers questions about German Bundesliga football coaches using Named Entity Recognition (NER), Wikidata integration, and structured prompt generation for LLM APIs.
+A Retrieval-Augmented Generation (RAG) system that answers questions about German Bundesliga football coaches using Named Entity Recognition (NER), Wikidata integration and structured prompt generation for LLM APIs.
 
 ## Table of Contents
-- [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -18,18 +15,6 @@ A Retrieval-Augmented Generation (RAG) system that answers questions about Germa
 
 
 
-
-## Features
-
-- **Named Entity Recognition**: Hybrid approach using gazetteer-based matching and spaCy NLP
-- **Real-time Data**: Fetches current Bundesliga club and manager information from Wikidata
-- **Wikipedia Integration**: Enriches responses with biographical content from Wikipedia
-- **Structured Prompts**: Generates properly formatted prompts for LLM APIs (OpenAI, Anthropic, etc.)
-- **Fuzzy Matching**: Handles variations in club names and city references
-- **Comprehensive Logging**: Detailed logging for debugging and monitoring
-
-## Prerequisites
-
 Before running this project, ensure you have the following installed:
 
 - **Python 3.8+**
@@ -40,25 +25,19 @@ Before running this project, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd bundesliga-rag-chatbot
+   git clone https://github.com/SevenDaysDA/CoachRAGBot.git
+   cd coach_rag
    ```
 
 2. **Create virtual environment** (recommended)
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   conda create -n ragcoach python=3.11
+   conda activate ragcoach
    ```
 
 3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
-   ```
-
-4. **Download spaCy model**
-(Optional if you want to use a out-of-shelf ner model)
-   ```bash
-   python -m spacy download en_core_web_sm
    ```
 
 ## Configuration
@@ -119,12 +98,13 @@ The system returns structured prompts ready for LLM APIs:
 ## Project Structure
 
 ```
+├── console_interface.py    # Console Interface for easy interaction
 ├── rag_chatbot.py          # Main RAG system orchestrating all components
 ├── ner_model.py            # NER implementation (gazetteer + fuzzy match)
 ├── wikidata_connector.py   # Wikidata and Wikipedia API integration
 ├── prompt_builder.py       # Structured prompt generation for LLMs
 ├── requirements.txt        # Python dependencies
-└── README.md              # This file
+└── README.md               # This file
 ```
 
 ## Technical Architecture
@@ -133,7 +113,7 @@ The system returns structured prompts ready for LLM APIs:
 
 1. **RAGChatbot** (`rag_chatbot.py`)
    - Main orchestrator class
-   - Coordinates entity extraction, data retrieval, and prompt generation
+   - Coordinates entity extraction, data retrieval and prompt generation
    - Handles confidence-based entity resolution
 
 2. **NERManager** (`ner_model.py`)
@@ -143,7 +123,6 @@ The system returns structured prompts ready for LLM APIs:
 3. **WikidataConnector** (`wikidata_connector.py`)
    - SPARQL queries to Wikidata for current Bundesliga information
    - Wikipedia content retrieval for biographical information
-   - Comprehensive error handling and fallback mechanisms
 
 4. **PromptBuilder** (`prompt_builder.py`)
    - Generates system/user message pairs for LLM APIs
