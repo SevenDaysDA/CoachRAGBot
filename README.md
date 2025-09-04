@@ -56,6 +56,8 @@ No additional configuration files are needed. The system uses:
 
 ## Usage
 
+The first usage may take a bit longer for the model to load (~15 sec)
+
 ### DEMO with console interface
 
 ```bash
@@ -83,6 +85,13 @@ python rag_chatbot.py
 
 This will run example queries and display the structured prompts.
 
+### Benchmarking
+
+In the `benchmark.py` script you can change the attribute of the *dataset_type* and the *model*. Then run:
+
+```bash
+python benchmark.py
+```
 
 ### Output Format
 
