@@ -12,10 +12,12 @@ A Retrieval-Augmented Generation (RAG) system that answers questions about Germa
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Technical Architecture](#technical-architecture)
-- [API Documentation](#api-documentation)
-- [Testing](#testing)
-- [Known Limitations](#known-limitations)
-- [Future Improvements](#future-improvements)
+- [Expected Outputs](#expected-outputs)
+- [Errors of Wikidata](#known-errors-of-wikidata)
+- [Answers for Additional Questions](#answers-to-additional-questions)
+
+
+
 
 ## Features
 
@@ -150,7 +152,6 @@ The system returns structured prompts ready for LLM APIs:
 
 
 
-
 ### Expected Outputs
 
 The system should successfully resolve queries about current Bundesliga managers and return structured prompts with:
@@ -159,5 +160,53 @@ The system should successfully resolve queries about current Bundesliga managers
 - Biographical information from Wikipedia
 - Proper system/user message formatting
 
+
+### Known errors of Wikidata
+
+Both at the time of the tests (04.09.2025)
+- FC Augsburg: For Augsburg the program would not give any answers because the team is not listed as a meber of the bundesliga in wikidata. it was deprecated as bundesliga team and newer renewed.
+- Bayer 04 Leverkusen: Leverkusen has currently no trainer since 01.09.25.. Wikidata has a white space for this case. We could retrieve the last active manager, but this would deceive the function of recent information.
+
+
+
+
+# ANSWERS to Additional Questions
+
+## 1. What are advantages and disadvantages of using additional information for a chatbot instead of letting the LLM answer without it?
+
+Using additional information allows the chatbot to provide fresh and up-to-date answers. It also makes the content more controllable and helps reduce hallucinations, since the chatbot can rely on external sources instead of generating facts from memory. If false or outdated information is present, it can be corrected by updating the external data, whereas an LLM would require retraining. Another benefit is that smaller language models can be used, because the system depends more on linguistic capabilities than on stored knowledge.
+
+However, this approach introduces extra complexity. External data sources and the infrastructure to manage them need to be maintained, which increases development effort. In addition, when knowledge graphs or third-party services are involved, queries can take longer to resolve. This can lead to higher latency compared to a model that answers directly from its internal knowledge.
+
+
+## 2. What are advantages and disadvantages of querying for this data on every user question?
+
+Querying the data on every user question ensures that the chatbot always works with the most up-to-date information. If details change while the system is running, they are reflected immediately in the response, which guarantees real-time accuracy.
+
+On the other hand, this approach comes with clear drawbacks. Each query increases latency, which can slow down the user experience. It also makes the system dependent on external services. If a system is unavailable or the rate is limited, the chatbot will fail to provide an answer.
+
+
+
+## 3. How would the process change if the information about coaches only were available via pdf?
+
+The approach would depend on the structure of the data within the PDFs.
+
+- If the data is semi-structured (e.g., tables or consistent formatting), it would be best to transform it into a knowledge graph and query it directly, similar to how Wikidata is used.
+- If the data is unstructured text, a content chunking approach could be more feasible. The chunks could then be embedded and indexed in a vector database to enable semantic retrieval.
+
+Bot processes would require a PDF loader with layout-aware extraction.
+
+## 4. Do you see potential for agents in this process? If so, where and how?
+
+Agents can enhance the flexibility and robustness of the retrieval pipeline. They can coordinate multi-step workflows, such as querying Wikidata with SPARQL, performing entity disambiguation, and enriching the results with Wikipedia summaries. Agents can also support error recovery by handling situations where data is incomplete or missing, for example by checking alternative labels or using language-model similarity to infer the correct information. Additionally, agents can help with data management by maintaining periodic caches of club and coach information, refreshing knowledge on a regular schedule, and monitoring for changes or inconsistencies over time.
+
+## 5. How do these kinds of processes profit from a data model that models the specific domain knowledge?
+
+A dedicated data model provides clear relationships (e.g., City → Club → Manager), which improves disambiguation and reduces errors.
+It also enables structured multi-hop queries, making retrieval more efficient and flexible. For example:
+- Historical queries: “Who coached Bayern between 2015–2020?”
+- Multi-entity queries: “Which cities have multiple Bundesliga teams?”
+
+A domain-specific model ensures consistency and supports complex reasoning. It also simplifies the extension of the system to new use cases.
 
 
