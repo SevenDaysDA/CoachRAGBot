@@ -95,17 +95,6 @@ The system returns structured prompts ready for LLM APIs:
 }
 ```
 
-## Project Structure
-
-```
-├── console_interface.py    # Console Interface for easy interaction
-├── rag_chatbot.py          # Main RAG system orchestrating all components
-├── ner_model.py            # NER implementation (gazetteer + fuzzy match)
-├── wikidata_connector.py   # Wikidata and Wikipedia API integration
-├── prompt_builder.py       # Structured prompt generation for LLMs
-├── requirements.txt        # Python dependencies
-└── README.md               # This file
-```
 
 ## Technical Architecture
 
@@ -139,6 +128,16 @@ The system should successfully resolve queries about current Bundesliga managers
 - Biographical information from Wikipedia
 - Proper system/user message formatting
 
+
+### Benchmarking
+
+To test the chatbot i created a synthetic dataset with 200 entries to see if basic queries are answered correctly. I use two types: "clean" for queries with no mistakes in the name and "spelling_error" for queries that have a spelling error in the city name or use a pseudonym.
+
+| NER model | sparql search | performance (clean) | performace (spelling_error) |
+|-----------|---------------|---------------------|-------------------------------|
+| gazetter | alias search of team name | 100% |58.2%|
+| gazetter + fuzzy match | alias search of team name | 100% | 61.2% |
+| spacy ner | alias search of team name | 71.7% | 38.8% |
 
 ### Known errors of Wikidata
 

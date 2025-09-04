@@ -1,0 +1,102 @@
+id,question,expected,response, dataset_type, model
+113,Who is training the kölle boys?,Lukas Kwasniok,,spelling_error,spacy_ner
+114,who is the coach of hdnheim?,Frank Schmidt,,spelling_error,spacy_ner
+116,Who is leading munich fc?,Vincent Kompany,,spelling_error,spacy_ner
+118,Dortmund guys coach?,Niko Kovač,,spelling_error,spacy_ner
+119,who runs mainz05?,Bo Henriksen,,spelling_error,spacy_ner
+120,Hbg manager?,Steffen Baumgart,,spelling_error,spacy_ner
+121,Who is Leipzig's coach?,Ole Werner,,spelling_error,spacy_ner
+122,Freiburg i.B. coach?,Julian Schuster,,spelling_error,spacy_ner
+123,Who is managing wolsburg?,Paul Simonis,,spelling_error,spacy_ner
+126,TSG Hoff coach?,Christian Ilzer,,spelling_error,spacy_ner
+128,munich boss?,Vincent Kompany,,spelling_error,spacy_ner
+129,Heidenhm coach?,Frank Schmidt,,spelling_error,spacy_ner
+132,Dortmund fc manager?,Niko Kovač,,spelling_error,spacy_ner
+133,leipz manager?,Ole Werner,,spelling_error,spacy_ner
+134,Who manages mainz?,Bo Henriksen,,spelling_error,spacy_ner
+135,Freiburg boss?,Julian Schuster,,spelling_error,spacy_ner
+137,Hmburg manager?,Steffen Baumgart,,spelling_error,spacy_ner
+139,Stuttgart head?,Sebastian Hoeneß,,spelling_error,spacy_ner
+143,Hdnheim football manager?,Frank Schmidt,,spelling_error,spacy_ner
+144,Who runs Kölle?,Lukas Kwasniok,,spelling_error,spacy_ner
+146,Dortmnd manager?,Niko Kovač,,spelling_error,spacy_ner
+147,Leipz fc head?,Ole Werner,,spelling_error,spacy_ner
+148,Mainz05 head coach?,Bo Henriksen,,spelling_error,spacy_ner
+149,Frbg i.B. manager?,Julian Schuster,,spelling_error,spacy_ner
+151,Hmb coach?,Steffen Baumgart,,spelling_error,spacy_ner
+154,TSG Hoff fc coach?,Christian Ilzer,,spelling_error,spacy_ner
+155,Who is coaching Berliners?,Steffen Baumgart,,spelling_error,spacy_ner
+157,Heidnheim coach?,Frank Schmidt,,spelling_error,spacy_ner
+159,Pauli boys coach?,Alexander Blessin,,spelling_error,spacy_ner
+160,Dortmund fc boss?,Niko Kovač,,spelling_error,spacy_ner
+162,Mainz05 coach?,Bo Henriksen,,spelling_error,spacy_ner
+163,Freiburg ib manager?,Julian Schuster,,spelling_error,spacy_ner
+165,Hbg fc manager?,Steffen Baumgart,,spelling_error,spacy_ner
+167,Stuttg coach?,Sebastian Hoeneß,,spelling_error,spacy_ner
+168,Hoff fc head?,Christian Ilzer,,spelling_error,spacy_ner
+171,Heidheim head coach?,Frank Schmidt,,spelling_error,spacy_ner
+172,Kölle boys manager?,Lukas Kwasniok,,spelling_error,spacy_ner
+173,Pauli fc head?,Alexander Blessin,,spelling_error,spacy_ner
+174,Dortmnd fc coach?,Niko Kovač,,spelling_error,spacy_ner
+175,Leipz fc coach?,Ole Werner,,spelling_error,spacy_ner
+176,Mainz boss?,Bo Henriksen,,spelling_error,spacy_ner
+179,Hamburg boss?,Steffen Baumgart,,spelling_error,spacy_ner
+181,Stuttg lads coach?,Sebastian Hoeneß,,spelling_error,spacy_ner
+185,Heidnheim lads boss?,Frank Schmidt,,spelling_error,spacy_ner
+186,Kölle fc coach?,Lukas Kwasniok,,spelling_error,spacy_ner
+187,Pauli boys head?,Alexander Blessin,,spelling_error,spacy_ner
+188,Dortmund lads coach?,Niko Kovač,,spelling_error,spacy_ner
+189,Leipz fc boss?,Ole Werner,,spelling_error,spacy_ner
+190,Mainz fc head?,Bo Henriksen,,spelling_error,spacy_ner
+191,Frbg i.B. head?,Julian Schuster,,spelling_error,spacy_ner
+193,Hbg lads coach?,Steffen Baumgart,,spelling_error,spacy_ner
+195,VfB stuttg head?,Sebastian Hoeneß,,spelling_error,spacy_ner
+196,TSG Hoff lads coach?,Christian Ilzer,,spelling_error,spacy_ner
+199,Hdnheim boss?,Frank Schmidt,,spelling_error,spacy_ner
+202,Dortmund fc head?,Niko Kovač,,spelling_error,spacy_ner
+203,Leipz boys manager?,Ole Werner,,spelling_error,spacy_ner
+204,Mainz fc boss?,Bo Henriksen,,spelling_error,spacy_ner
+205,Freiburg i.B. head?,Julian Schuster,,spelling_error,spacy_ner
+209,Stuttg fc head?,Sebastian Hoeneß,,spelling_error,spacy_ner
+210,Hoff fc manager?,Christian Ilzer,,spelling_error,spacy_ner
+113,Who is training the kölle boys?,Lukas Kwasniok,,spelling_error,vanilla_gazetteer
+114,who is the coach of hdnheim?,Frank Schmidt,,spelling_error,vanilla_gazetteer
+120,Hbg manager?,Steffen Baumgart,,spelling_error,vanilla_gazetteer
+123,Who is managing wolsburg?,Paul Simonis,,spelling_error,vanilla_gazetteer
+126,TSG Hoff coach?,Christian Ilzer,,spelling_error,vanilla_gazetteer
+129,Heidenhm coach?,Frank Schmidt,,spelling_error,vanilla_gazetteer
+133,leipz manager?,Ole Werner,,spelling_error,vanilla_gazetteer
+137,Hmburg manager?,Steffen Baumgart,,spelling_error,vanilla_gazetteer
+142,München coach?,Vincent Kompany,,spelling_error,vanilla_gazetteer
+143,Hdnheim football manager?,Frank Schmidt,,spelling_error,vanilla_gazetteer
+144,Who runs Kölle?,Lukas Kwasniok,,spelling_error,vanilla_gazetteer
+146,Dortmnd manager?,Niko Kovač,,spelling_error,vanilla_gazetteer
+147,Leipz fc head?,Ole Werner,,spelling_error,vanilla_gazetteer
+149,Frbg i.B. manager?,Julian Schuster,,spelling_error,vanilla_gazetteer
+151,Hmb coach?,Steffen Baumgart,,spelling_error,vanilla_gazetteer
+153,VfB stuttg manager?,Sebastian Hoeneß,,spelling_error,vanilla_gazetteer
+154,TSG Hoff fc coach?,Christian Ilzer,,spelling_error,vanilla_gazetteer
+156,Munchen fc boss?,Vincent Kompany,,spelling_error,vanilla_gazetteer
+157,Heidnheim coach?,Frank Schmidt,,spelling_error,vanilla_gazetteer
+165,Hbg fc manager?,Steffen Baumgart,,spelling_error,vanilla_gazetteer
+167,Stuttg coach?,Sebastian Hoeneß,,spelling_error,vanilla_gazetteer
+168,Hoff fc head?,Christian Ilzer,,spelling_error,vanilla_gazetteer
+170,München lads coach?,Vincent Kompany,,spelling_error,vanilla_gazetteer
+171,Heidheim head coach?,Frank Schmidt,,spelling_error,vanilla_gazetteer
+172,Kölle boys manager?,Lukas Kwasniok,,spelling_error,vanilla_gazetteer
+174,Dortmnd fc coach?,Niko Kovač,,spelling_error,vanilla_gazetteer
+175,Leipz fc coach?,Ole Werner,,spelling_error,vanilla_gazetteer
+181,Stuttg lads coach?,Sebastian Hoeneß,,spelling_error,vanilla_gazetteer
+184,Munchen head?,Vincent Kompany,,spelling_error,vanilla_gazetteer
+185,Heidnheim lads boss?,Frank Schmidt,,spelling_error,vanilla_gazetteer
+186,Kölle fc coach?,Lukas Kwasniok,,spelling_error,vanilla_gazetteer
+189,Leipz fc boss?,Ole Werner,,spelling_error,vanilla_gazetteer
+191,Frbg i.B. head?,Julian Schuster,,spelling_error,vanilla_gazetteer
+193,Hbg lads coach?,Steffen Baumgart,,spelling_error,vanilla_gazetteer
+195,VfB stuttg head?,Sebastian Hoeneß,,spelling_error,vanilla_gazetteer
+196,TSG Hoff lads coach?,Christian Ilzer,,spelling_error,vanilla_gazetteer
+198,Munchen fc manager?,Vincent Kompany,,spelling_error,vanilla_gazetteer
+199,Hdnheim boss?,Frank Schmidt,,spelling_error,vanilla_gazetteer
+203,Leipz boys manager?,Ole Werner,,spelling_error,vanilla_gazetteer
+209,Stuttg fc head?,Sebastian Hoeneß,,spelling_error,vanilla_gazetteer
+210,Hoff fc manager?,Christian Ilzer,,spelling_error,vanilla_gazetteer
