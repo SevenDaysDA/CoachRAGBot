@@ -1,4 +1,5 @@
 import logging
+import spacy
 
 # Required to download the pretrained English NER model before running:
 # python -m spacy download en_core_web_sm
@@ -115,7 +116,6 @@ class GazetteerData:
             "CLUBS": set(clubs),
             "CITIES": set(cities),
         }
-
         logger.info(f"Processed {len(clubs)} club entries and {len(cities)} city entries")
 
 
@@ -124,10 +124,19 @@ class NERManager:
     Combines gazetteer-based and spaCy-based NER.
     """
 
-    def __init__(self):
+    def __init__(self, use_gazetteer=True, use_spacy=False, spacy_model="en_core_web_sm"):
         # Initialize gazetteer with preprocessed entities
-        logger.info("Initializing GazetteerNER and spaCy model")
-        self.gazetteer = GazetteerNER(GazetteerData().entities)
+        # Initialize spacy ner model
+
+        logger.info("Initializing NERManager")
+        self.use_gazetteer = use_gazetteer
+        self.use_spacy = use_spacy
+
+        if use_gazetteer:
+            self.gazetteer = GazetteerNER(GazetteerData().entities)
+
+        if use_spacy:
+            self.spacy_nlp = spacy.load(spacy_model)
 
     def predict(self, text):
         """
@@ -139,18 +148,28 @@ class NERManager:
         Returns:
             dict: {"gazetteer": [...], "spacy": [...]}
         """
-        gaz_ents = self.gazetteer.predict(text)
+        results = {}
 
-        logger.info(f"Detected {len(gaz_ents)} gazetteer entities")
-        return {"gazetteer": gaz_ents}
+        if self.use_gazetteer:
+            gaz_ents = self.gazetteer.predict(text)
+            results["gazetteer"] = gaz_ents
+            logger.info(f"Detected {len(gaz_ents)} gazetteer entities")
+
+        if self.use_spacy:
+            doc = self.spacy_nlp(text)
+            spacy_ents = [(ent.text, ent.start_char, ent.end_char, ent.label_) for ent in doc.ents]
+            results["spacy"] = spacy_ents
+
+            logger.info(f"Detected {len(spacy_ents)} spaCy entities")
+
+        return results
 
 
 if __name__ == "__main__":
-    # Initialize NER manager
-    manager = NERManager()
-    text = "Who is coaching munich?".lower()
+    # Example usage
+    manager = NERManager(use_gazetteer=True, use_spacy=True)
+    text = "Who is coaching Bayern Munich in Berlin?"
 
-    # predict gazetteer and spaCy predictions
     results = manager.predict(text)
     for k, v in results.items():
         logger.info(f"{k} entities: {v}")

@@ -62,7 +62,7 @@ class RAGChatbot:
 
         resolved_club = None
         for entity in entities:
-            if entity.label in ("CLUBS", "CITIES"):
+            if entity.label in ("CLUBS", "CITIES", "ORG", "GPE"):
                 club_info = self.wikidata.get_club_info(entity.text)
 
                 if club_info:
@@ -102,8 +102,8 @@ class RAGChatbot:
         for text, start, end, label, score in ner_results.get("gazetteer", []):
             entities.append(ExtractedEntity(text, start, end, label, score / 100, "gazetteer"))
 
-        # for text, start, end, label in ner_results.get("spacy", []):
-        #     entities.append(ExtractedEntity(text, start, end, label, 0.9, "spacy"))
+        for text, start, end, label in ner_results.get("spacy", []):
+            entities.append(ExtractedEntity(text, start, end, label, 0.9, "spacy"))
 
         return entities
 
